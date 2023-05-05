@@ -1,26 +1,30 @@
-//
-//  ContentView.swift
-//  NC1_Ava
-//
-//  Created by Pravangasta Suihangya Balqis Wahyudi on 04/05/23.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ZStack {
+            Image("background")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+                
+            VStack {
+                Spacer()
+                NavigationLink(destination: findroot()) {
+                    Text("Go to Second View")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                Spacer()
+            }
         }
-        .padding()
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+struct findroot: View {
+    var body: some View {
+        Text("Hello from Second View!")
+            .navigationBarTitle("Second View")
     }
 }
