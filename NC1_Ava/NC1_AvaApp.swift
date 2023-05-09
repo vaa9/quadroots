@@ -14,4 +14,5 @@ struct NC1_AvaApp: App {
             ContentView()
         }
     }
+    
 }
