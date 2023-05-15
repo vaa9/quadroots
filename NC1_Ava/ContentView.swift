@@ -53,7 +53,7 @@ struct ContentView: View {
               let root2_Equation = Double(self.root2_Equation)
                 
         else {
-            let equation = "isi dulu"
+            let equation = "Please Input The Root!"
             return (equation)
         }
         
@@ -218,7 +218,7 @@ struct ContentView: View {
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .keyboardType(.decimalPad)
                                     Spacer()
-                                    if a.isEmpty || b.isEmpty || c.isEmpty{
+                                    if root1_Equation.isEmpty || root2_Equation.isEmpty{
                                         Button {
                                             result = solveQuadraticEquation()
                                         } label: {
@@ -229,6 +229,7 @@ struct ContentView: View {
                                         }
                                         .padding(10)
                                         .background(.yellow)
+                                        .disabled(true)
                                         .cornerRadius(10)
                                         
                                     }else{
@@ -272,7 +273,7 @@ struct ContentView: View {
                                         }else{
                                             Text(result)
                                                 .frame(maxWidth: .infinity)
-                                                .font(.title2)
+                                                
                                         }
                                             
                                         
