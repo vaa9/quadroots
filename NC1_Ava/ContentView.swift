@@ -96,7 +96,9 @@ struct ContentView: View {
                         
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    .padding(.vertical)
                     VStack {
+                        
                     switch selectedTab {
                         // Root
                     case 0:
@@ -124,7 +126,7 @@ struct ContentView: View {
                                                 .font(.title2)
                                         }
                                         .padding(10)
-                                        .background(.yellow)
+                                        .background(.gray)
                                         .cornerRadius(10)
                                         .disabled(true)
                                     }else{
@@ -195,7 +197,7 @@ struct ContentView: View {
                                         
                                         
                                     }
-                                    Spacer()
+                                   
                                     
                                 }
                                 .padding()
@@ -228,9 +230,10 @@ struct ContentView: View {
                                             
                                         }
                                         .padding(10)
-                                        .background(.yellow)
+                                        .background(.gray)
                                         .disabled(true)
                                         .cornerRadius(10)
+                                        
                                         
                                     }else{
                                         Button {
@@ -295,7 +298,7 @@ struct ContentView: View {
                     
                     
                 }
-                .navigationTitle("Root Equation Calc")
+                .navigationTitle("Quadratic Equation")
                 .padding()
                 .frame(maxWidth: .infinity,maxHeight:.infinity)
                 .background(.ultraThinMaterial)
