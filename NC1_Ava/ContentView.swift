@@ -82,12 +82,22 @@ struct ContentView: View {
             return "\(a)x^2 - \(c) = 0"
         }
     }
+    func clearFindRoot(){
+        a = ""
+        b = ""
+        c = ""
+    }
+    func clearFindEquation(){
+        root1_Equation = ""
+        root2_Equation = ""
+    }
     
     var body: some View {
-       
-            
+        
+        
         NavigationStack{
-                
+            ScrollView{
+                VStack{
                     // Picker
                     Picker(selection: $selectedTab, label: Text("Tabs")) {
                         ForEach(0..<tabs.count) { index in
@@ -96,15 +106,19 @@ struct ContentView: View {
                         
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .padding(.vertical)
-                    VStack {
-                        
+                    .padding()
+                    .navigationTitle("Quadratic Equation")
+                }
+                
+                
+                VStack{
                     switch selectedTab {
                         // Root
                     case 0:
-                        Form{
-                            Section(header: Text("Find the Root")){
+                        VStack{
+                            Section(header: Text("Find the Root").fontWeight(.bold)){
                                 Text("Equation Form is Ax^2 + Bx + C")
+                                    .fontWeight(.bold)
                                 VStack(alignment: .center) {
                                     TextField("Enter A", text: $a)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -115,56 +129,79 @@ struct ContentView: View {
                                     TextField("Enter C", text: $c)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .keyboardType(.decimalPad)
-                                    Spacer()
-                                    if a.isEmpty || b.isEmpty || c.isEmpty{
-                                        Button {
-                                            calculateRoots()
-                                            //let diskriminan = discriminant_Root
-                                        } label: {
-                                            Text("Find Roots")
-                                                .frame(maxWidth: .infinity)
-                                                .font(.title2)
-                                        }
-                                        .padding(10)
-                                        .background(.gray)
-                                        .cornerRadius(10)
-                                        .disabled(true)
-                                    }else{
-                                        Button {
-                                            calculateRoots()
-                                            //let diskriminan = discriminant_Root
-                                        } label: {
-                                            Text("Find Roots")
-                                                .frame(maxWidth: .infinity)
-                                                .font(.title2)
-                                        }
-                                        .padding(10)
-                                        .background(.yellow)
-                                        .foregroundColor(.primary)
-                                        .cornerRadius(10)
-                                    }
-                                    
-                                    
                                     
                                 }
-
+                                if a.isEmpty || b.isEmpty || c.isEmpty{
+                                    Button {
+                                        calculateRoots()
+                                    } label: {
+                                        Text("Calculate!")
+                                            .frame(maxWidth: .infinity)
+                                            .font(.title3)
+                                        
+                                    }
+                                    .padding(10)
+                                    .background(.quaternary)
+                                    .disabled(true)
+                                    .cornerRadius(10)
+                                    
+                                    
+                                }else{
+                                    Button {
+                                        calculateRoots()
+                                    } label: {
+                                        Text("Calculate!")
+                                            .frame(maxWidth: .infinity)
+                                            .font(.title3)
+                                        
+                                    }
+                                    .padding(10)
+                                    .background(.yellow)
+                                    .cornerRadius(10)
+                                    .foregroundColor(.primary)
+                                }
+                                Button {
+                                    clearFindRoot()
+                                } label: {
+                                    Text("Clear")
+                                        .frame(maxWidth: .infinity)
+                                        .font(.title3)
+                                }
+                                .padding(10)
+                                .background(.clear)
+                                .foregroundColor(.yellow)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.yellow, lineWidth: 2)
+                                )
                             }
                             .listRowSeparator(.hidden)
                             .padding(5)
-                            
-                            
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(20)
+                        .shadow(radius: 1)
+                        .padding()
+                        VStack{
                             Section{
                                 VStack{
                                     Text("Result")
                                         .font(.title)
-                                    Divider()
+                                        .fontWeight(.bold)
                                     Spacer()
                                     HStack{
-                                        if (discriminant_Root ==  nil) {
+                                        if (a == "" || b == "" || c == "") {
                                             Text("Please Input The Equation")
                                                 .frame(maxWidth: .infinity)
                                         }
-                                       else if (discriminant_Root ?? 0) < 0.0 {
+                                        else if (discriminant_Root  == nil){
+                                            Text("Please Input The Equation")
+                                                .frame(maxWidth: .infinity)
+                                        }
+                                        else if (discriminant_Root ?? 0) < 0.0 {
                                             VStack{
                                                 Spacer()
                                                 HStack{
@@ -197,21 +234,27 @@ struct ContentView: View {
                                         
                                         
                                     }
-                                   
+                                    
                                     
                                 }
-                                .padding()
-                                
+
                             }
-                            
                         }
-                        .scrollContentBackground(.hidden)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(20)
+                        .shadow(radius: 1)
+                        .padding()
+                        
+                        
                         
                         // Equation
                     case 1:
-                        Form{
-                            Section(header: Text("Find The Equation")){
+                        VStack{
+                            Section(header: Text("Find The Equation").fontWeight(.bold)){
                                 Text("Enter The Roots")
+                                    .fontWeight(.bold)
                                 VStack(alignment: .center) {
                                     TextField("Enter X1", text: $root1_Equation)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -219,97 +262,123 @@ struct ContentView: View {
                                     TextField("Enter X2", text: $root2_Equation)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .keyboardType(.decimalPad)
-                                    Spacer()
-                                    if root1_Equation.isEmpty || root2_Equation.isEmpty{
-                                        Button {
-                                            result = solveQuadraticEquation()
-                                        } label: {
-                                            Text("Make an Equation")
-                                                .frame(maxWidth: .infinity)
-                                                .font(.title2)
-                                            
-                                        }
-                                        .padding(10)
-                                        .background(.gray)
-                                        .disabled(true)
-                                        .cornerRadius(10)
-                                        
-                                        
-                                    }else{
-                                        Button {
-                                            result = solveQuadraticEquation()
-                                        } label: {
-                                            Text("Make an Equation")
-                                                .frame(maxWidth: .infinity)
-                                                .font(.title2)
-                                            
-                                        }
-                                        .padding(10)
-                                        .background(.yellow)
-                                        .cornerRadius(10)
-                                        .foregroundColor(.primary)
-                                    }
-                                    
-                                  
-                                    
                                     
                                 }
+                                if  root1_Equation.isEmpty || root2_Equation.isEmpty{
+                                    Button {
+                                        result = solveQuadraticEquation()
+                                    } label: {
+                                        Text("Calculate!")
+                                            .frame(maxWidth: .infinity)
+                                            .font(.title3)
+                                        
+                                    }
+                                    .padding(10)
+                                    .background(.quaternary)
+                                    .disabled(true)
+                                    .cornerRadius(10)
+                                    
+                                    
+                                }else{
+                                    Button {
+                                        result = solveQuadraticEquation()
+                                    } label: {
+                                        Text("Calculate!")
+                                            .frame(maxWidth: .infinity)
+                                            .font(.title3)
+                                        
+                                    }
+                                    .padding(10)
+                                    .background(.yellow)
+                                    .cornerRadius(10)
+                                    .foregroundColor(.primary)
+                                }
+                                Button {
+                                    clearFindEquation()
+                                } label: {
+                                    Text("Clear")
+                                        .frame(maxWidth: .infinity)
+                                        .font(.title3)
+                                }
+                                .padding(10)
+                                .background(.clear)
+                                .foregroundColor(.yellow)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.yellow, lineWidth: 2)
+                                )
+                                
                                 
                             }
                             .listRowSeparator(.hidden)
                             .padding(5)
-                            
-                           
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(20)
+                        .shadow(radius: 1)
+                        .padding()
+                        VStack{
                             Section{
                                 VStack{
                                     Text("Result")
                                         .font(.title)
-                                    Divider()
+                                        .fontWeight(.bold)
                                     Spacer()
                                     HStack{
-                                        
-                                        if result == ""{
+                                        if root1_Equation.isEmpty || root2_Equation.isEmpty {
                                             Text("Please Input The Root!")
                                                 .frame(maxWidth: .infinity)
-                                                
-                                                
+                                        }
+                                        else if result == ""{
+                                            Text("Please Input The Root!")
+                                                .frame(maxWidth: .infinity)
+                                            
+                                            
                                         }else{
                                             Text(result)
                                                 .frame(maxWidth: .infinity)
-                                                
-                                        }
                                             
+                                        }
                                         
-                                        Spacer()
                                         
                                     }
                                     
                                     
                                 }
-                               
-                                .padding()
+                                
+
                             }
-                            
                         }
-                        .scrollContentBackground(.hidden)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(20)
+                        .shadow(radius: 1)
+                        .padding()
+                        
                     default:
                         Text("Something went wrong.")
                     }
-                    
-                    
                 }
-                .navigationTitle("Quadratic Equation")
-                .padding()
-                .frame(maxWidth: .infinity,maxHeight:.infinity)
-                .background(.ultraThinMaterial)
-                .cornerRadius(25)
             }
+            
+            
+
+//            .navigationTitle("Quadratic Equation")
+//            .padding()
+//            .frame(maxWidth: .infinity,maxHeight:.infinity)
+//            .background(.ultraThinMaterial)
+//            .cornerRadius(25)
+        }
         .navigationBarTitleDisplayMode(.inline)
         .padding()
-        }
+    }
     
     
-
+    
     
     struct ContentView_Previews: PreviewProvider {
         static var previews: some View {
